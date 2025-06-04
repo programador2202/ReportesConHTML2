@@ -1,18 +1,15 @@
 <?php
+
 require_once '../models/Mascota.php';
-
 $mascota= new Mascota();
-
 $parametros=[
-"idpropetario" => 2,
-"tipo"         => "Gato",
-"nombre"       => "Chifu",
-"color"        => "Gris con blanco",
-"genero"       => "Macho",
-"idmascota"    => 5
+  'idPropietario'=>1,
+  'tipo'=>"GATO",
+  'nombre'=>"Chifu",
+  'color'=>"Gris con Blanco",
+  'genero'=>"MACHO",
+  'idMascota'=>4
 ];
+$num=$mascota->update($parametros);
 
-$num= $mascota->update($parametros);
-var_dump($num)
-?>
-
+var_dump($num);

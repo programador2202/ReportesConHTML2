@@ -1,37 +1,51 @@
-CREATE DATABASE veterinaria;
+CREATE DATABASE VETERINARIA;
 
-use veterinaria;
+USE VETERINARIA;
 
-CREATE TABLE PROPETARIOS(
-idpropetario INT AUTO_INCREMENT PRIMARY KEY,
-apellidos VARCHAR(50) NOT NULL,
-nombres VARCHAR(50)NOT NULL
-
+CREATE TABLE PROPIETARIO (
+  idPropietario   INT PRIMARY KEY AUTO_INCREMENT,
+  apellidos VARCHAR(40) NOT NULL,
+  nombres VARCHAR (40) NOT NULL
 )ENGINE=INNODB;
 
 CREATE TABLE MASCOTAS(
-idmascota INT AUTO_INCREMENT PRIMARY KEY,
-idpropetario INT NOT NULL,
-tipo ENUM('Perro','Gato')NOT NULL,
-nombre VARCHAR(50)NOT NULL,
-Color VARCHAR(50) NOT NULL,
-genero ENUM('SI','NO') NOT NULL,
-vive ENUM('SI','NO') NOT NULL DEFAULT 'SI',
-
-CONSTRAINT FK_propetario FOREIGN KEY (idpropetario) REFERENCES PROPETARIOS(idpropetario)
-
+  idMascota       INT PRIMARY KEY AUTO_INCREMENT,
+  idPropietario   INT NOT NULL,
+  tipo            ENUM('PERRO','GATO')NOT NULL,
+  nombre          VARCHAR(40) NOT NULL,
+  color           VARCHAR(40) NOT NULL,
+  genero          ENUM('HEMBRA','MACHO'),
+  vive            ENUM('SI','NO') NOT NULL DEFAULT 'SI',
+  CONSTRAINT fk_idpropietario FOREIGN KEY (idPropietario) REFERENCES PROPIETARIO(idPropietario)
 )ENGINE=INNODB;
 
-INSERT INTO PROPETARIOS(apellidos,nombres) VALUES('CONTRERAS CARRILLO','AIMAR ALEXANDER'),
-INSERT INTO PROPETARIOS(apellidos,nombres) VALUES('CONTRERAS MUÑANTE ','EYTHAN ABDIEL');
+INSERT INTO PROPIETARIO (apellidos,nombres) VALUES
+('Perez','Hugo'),
+('Castilla','Teresa');
 
-INSERT INTO MASCOTAS (idpropetario, tipo, nombre, color, genero, vive)
-VALUES (1, 'Perro', 'Firulais', 'Marrón', 'SI', 'SI');
-INSERT INTO MASCOTAS (idpropetario, tipo, nombre, color, genero, vive)
-VALUES (1, 'Perro', 'Firulais', 'Blanco', 'SI', 'SI');
-INSERT INTO MASCOTAS (idpropetario, tipo, nombre, color, genero, vive)
-VALUES (2, 'Perro', 'Guerrero', 'Marrón', 'SI', 'SI');
-INSERT INTO MASCOTAS (idpropetario, tipo, nombre, color, genero, vive)
-VALUES (2, 'Perro', 'Guerreo', 'Blanco', 'SI', 'SI');
+INSERT INTO MASCOTAS (idPropietario, tipo, nombre, color, genero, vive) VALUES
+(1,"PERRO", "FIRULAIS", "NEGRO", "MACHO", "SI" ),
+(2,"PERRO", "TUMOR", "NARANJA", "MACHO", "SI" ),
+(1,"GATO", "FIERRO", "GRIS", "MACHO", "SI" ),
+(2,"GATO", "PELUSA", "BLANCO", "HEMBRA", "SI" );
 
 
+update mascotas set idPropietario=1,
+tipo='GATO',
+nombre='Matador',
+color='Chocolate',
+genero ='MACHO'
+WHERE idMascota=2;
+
+SELECT * FROM MASCOTAS;
+
+SELECT 
+MA.idMascota,
+MA.nombre,
+MA.tipo,
+MA.color,
+MA.genero,
+CONCAT(PR.apellidos, ' ',PR.nombres) 'propietario'
+FROM MASCOTAS MA
+INNER JOIN PROPIETARIO PR ON MA.idPropietario=PR.idPropietario
+ORDER BY MA.nombre
